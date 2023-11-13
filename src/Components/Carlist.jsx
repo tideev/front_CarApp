@@ -4,7 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import Button from "@mui/material/Button";
-import {Snackbar} from "@mui/material";
+import { Snackbar } from "@mui/material";
 import AddCar from "./AddCar";
 import EditCar from "./EditCar";
 
@@ -40,11 +40,13 @@ export default function Carlist() {
             ),
             width: 120
         },
-        {cellRenderer: params =>
-        <Button size="small" color="error" onClick = {() => deleteCar(params)}>
-        Delete
-        </Button>,
-        width:120}
+        {
+            cellRenderer: params =>
+                <Button size="small" color="error" onClick={() => deleteCar(params)}>
+                    Delete
+                </Button>,
+            width: 120
+        }
     ];
 
     useEffect(() => getCars(), [])
@@ -62,33 +64,33 @@ export default function Carlist() {
 
     }
 
-    const deleteCar = (params) =>{
-        if (window.confirm('Are you sure?')){
-            fetch(params.data._links.car.href,{ method: 'DELETE'})
-            .then(response => {
-            if(response.ok){
-                setMsg('Car is deleted successfully!');
-                setOpen(true)
-                getCars();
-            } else 
-            alert('Something went wrong in deletion: ' + response.status);
-        })
-        .catch(err => console.error(err));
+    const deleteCar = (params) => {
+        if (window.confirm('Are you sure?')) {
+            fetch(params.data._links.car.href, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        setMsg('Car is deleted successfully!');
+                        setOpen(true)
+                        getCars();
+                    } else
+                        alert('Something went wrong in deletion: ' + response.status);
+                })
+                .catch(err => console.error(err));
+        }
     }
-    }
-    const addCar =(car) => {
+    const addCar = (car) => {
         fetch(url, {
             method: 'POST',
-            headers: {'Content-type': 'application/json'},
+            headers: { 'Content-type': 'application/json' },
             body: JSON.stringify(car)
         })
-        .then(response =>{
-            if(response.ok)
-            getCars();
-        else
-            alert('Something went wrong.')
-        })
-        .catch(err => consoler.error(err));
+            .then(response => {
+                if (response.ok)
+                    getCars();
+                else
+                    alert('Something went wrong.')
+            })
+            .catch(err => consoler.error(err));
     }
 
     const updateCar = (car) => {
@@ -111,27 +113,27 @@ export default function Carlist() {
 
     return (
         <>
-        <AddCar addCar={addCar}/>
-        <div className="ag-theme-material" style={{height:'700px', width: '90%', margin: 'auto'}}>
-            {cars.length > 0 ? (
-            <AgGridReact 
-                rowData={cars}
-                columnDefs={columns}
-                pagination={true}
-                paginationPageSize={10}
-            ></AgGridReact>
-            
-        ) : (
-            <p>Loading...</p>
-        )}
-        <Snackbar
-            open={open}
-            autoHideDuration={3000}
-            onClose={() => setOpen(false)}
-            message={msg}
-        />
+            <AddCar addCar={addCar} />
+            <div className="ag-theme-material" style={{ height: '700px', width: '90%', margin: 'auto' }}>
+                {cars.length > 0 ? (
+                    <AgGridReact
+                        rowData={cars}
+                        columnDefs={columns}
+                        pagination={true}
+                        paginationPageSize={10}
+                    ></AgGridReact>
 
-        </div>
+                ) : (
+                    <p>Loading...</p>
+                )}
+                <Snackbar
+                    open={open}
+                    autoHideDuration={3000}
+                    onClose={() => setOpen(false)}
+                    message={msg}
+                />
+
+            </div>
         </>
     )
 }
