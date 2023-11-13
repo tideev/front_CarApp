@@ -45,7 +45,6 @@ export default function EditCar(props) {
                     value={car.model}
                     onChange={handleInputChange}
                 />
-                {/* Add other fields as needed */}
             </DialogContent>
             <DialogActions>
                 <Button onClick={props.handleClose}>Close</Button>
